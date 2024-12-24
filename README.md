@@ -20,26 +20,46 @@ Before you begin, ensure that you have the following:
 1. Open the Google Sheet you just created.
 2. Go to the **Extensions** menu and select **Apps Script**.
 3. Delete any default code in the script editor.
-4. Paste the following code into the script editor:
-
-```javascript
-function listFiles() {
-  var folderId = 'YOUR_FOLDER_ID';  // Replace with your Google Drive folder ID
-  var folder = DriveApp.getFolderById(folderId);
-  var files = folder.getFiles();
-  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
-
-  // Add headers to the first row
-  sheet.appendRow(['File Name']);
-
-  // Loop through all files and list their names in the sheet
-  while (files.hasNext()) {
-    var file = files.next();
-    var fileName = file.getName();
-    sheet.appendRow([fileName]);  // Add each file name to a new row
-  }
-}
-```
+4. Choose one of the two options listed here and paste the code into the script editor.
+   - Option 1: Export file names only.
+     ```javascript
+      function listFileNames() {
+        var folderId = 'YOUR_FOLDER_ID';  // Replace with your Google Drive folder ID
+        var folder = DriveApp.getFolderById(folderId);
+        var files = folder.getFiles();
+        var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+      
+        // Add headers to the first row
+        sheet.appendRow(['File Name']);
+      
+        // Loop through all files and list their names in the sheet
+        while (files.hasNext()) {
+          var file = files.next();
+          var fileName = file.getName();
+          sheet.appendRow([fileName]);  // Add each file name to a new row
+        }
+      }
+      ``` 
+   - Option 2: Export file names along with their starred status.
+     ```javascript
+     function listFileNamesAndStarred() {
+       var folderId = 'YOUR_FOLDER_ID';  // Replace with your Google Drive folder ID
+       var folder = DriveApp.getFolderById(folderId);
+       var files = folder.getFiles();
+       var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+     
+       // Add headers to the first row
+       sheet.appendRow(['File Name', 'Starred']);
+     
+       // Loop through all files and list their names and starred status in the sheet
+       while (files.hasNext()) {
+         var file = files.next();
+         var fileName = file.getName();
+         var isStarred = file.isStarred() ? 1 : 0;  // Check if the file is starred
+         sheet.appendRow([fileName, isStarred]);  // Add file name and starred status to a new row
+       }
+     }
+     ```
 
 ### 3. Get the Folder ID
 1. Go to your Google Drive and navigate to the folder that contains the files.
